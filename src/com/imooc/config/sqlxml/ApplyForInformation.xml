@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="ApplyForInformation">
+  <resultMap type="com.imooc.bean.ApplyForInformation" id="ApplyForInformationResult">
+    <id column="l_number" jdbcType="INTEGER" property="l_number"/>
+    <result column="ID" jdbcType="VARCHAR" property="ID"/>
+    <result column="l_name" jdbcType="VARCHAR" property="l_name"/>
+    <result column="l_class" jdbcType="VARCHAR" property="l_class"/>
+    <result column="l_state" jdbcType="VARCHAR" property="l_state"/>
+    <result column="l_phone" jdbcType="VARCHAR" property="l_phone"/>
+    <result column="l_startTime" jdbcType="VARCHAR" property="l_startTime"/>
+    <result column="l_endTime" jdbcType="VARCHAR" property="l_endTime"/>
+    <result column="l_reason" jdbcType="VARCHAR" property="l_reason"/>
+  </resultMap>
+  	
+  <!-- 提交学生的请假信息，保存到数据库 -->
+  <insert id="saveMessage" parameterType="com.imooc.bean.ApplyForInformation">
+    INSERT INTO leave_information (ID,l_name,l_class,l_state,l_phone,l_startTime,l_endTime,l_reason) VALUES(#{ID},#{l_name},#{l_class},#{l_state},#{l_phone},#{l_startTime},#{l_endTime},#{l_reason}) 
+  </insert>
+  
+  <!-- 按照学生id号进行查找 -->
+  <select id="queryleaveMessage" parameterType="com.imooc.bean.ApplyForInformation" resultMap="ApplyForInformationResult">
+    select l_number,ID,l_name,l_class,l_state,l_phone,l_startTime,l_endTime,l_reason from leave_information where ID=#{ID}
+  </select>
+  
+  <!-- 按照学生班级进行查找 -->
+  <select id="queryleaveMessageForClass" parameterType="com.imooc.bean.ApplyForInformation" resultMap="ApplyForInformationResult">
+    select l_number,ID,l_name,l_class,l_state,l_phone,l_startTime,l_endTime,l_reason from leave_information where l_class=#{l_class}
+  </select>
+  <!-- 把一条信息的申请状态改为批准 -->
+  <update id="approvalSingleLeaveMessage"  parameterType="com.imooc.bean.ApplyForInformation">
+  	update leave_information set l_state = '批准' where l_number = #{l_number}
+  </update>
+  <!-- 把一条信息的申请状态改为拒绝 -->
+  <update id="refuseSingleLeaveMessage"  parameterType="com.imooc.bean.ApplyForInformation">
+  	update leave_information set l_state = '未通过' where l_number = #{l_number}
+  </update>
+  
+   <!-- 把多条信息的申请状态改为批准 -->
+  <update id="approvalBatchLeaveMessage"  parameterType="java.util.List">
+  	update leave_information set l_state = '批准' where l_number in(
+  		<foreach collection="list" item="number" separator=",">
+  			#{number}
+  		</foreach>
+  		)
+  </update>
+  
+  <!-- 删除一条信息 -->
+  <delete id="deleteOne" parameterType="int">
+  	delete from leave_information where ID = #{_parameter}
+  </delete>
+  
+</mapper>

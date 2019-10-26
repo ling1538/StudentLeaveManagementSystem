@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Teacher">
+  <resultMap type="com.imooc.bean.Teacher" id="TeacherResult">
+    <id column="ID" jdbcType="INTEGER" property="ID"/>
+    <result column="t_name" jdbcType="VARCHAR" property="t_name"/>
+    <result column="t_class" jdbcType="VARCHAR" property="t_class"/>
+    <result column="t_phone" jdbcType="VARCHAR" property="t_phone"/>
+  </resultMap>
+  	
+    <!-- 按照学生ID号进行查找 -->
+  <select id="queryTeacherMessage" parameterType="com.imooc.bean.Teacher" resultMap="TeacherResult">
+    select ID,t_name,t_class,t_phone from Teacher where ID=#{ID}
+  </select>
+  
+</mapper>

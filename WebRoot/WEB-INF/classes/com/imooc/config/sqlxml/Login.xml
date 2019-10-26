@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Login">
+  <resultMap type="com.imooc.bean.Login" id="LoginResult">
+    <id column="ID" jdbcType="INTEGER" property="id"/>
+    <result column="l_identity" jdbcType="VARCHAR" property="l_identity"/>
+    <result column="l_password" jdbcType="VARCHAR" property="l_password"/>
+  </resultMap>
+ <!-- 查询登录信息 -->
+  <select id="queryLoginList" parameterType="com.imooc.bean.Login" resultMap="LoginResult">
+    select ID,l_identity,l_password from LOGIN where ID=#{id} and l_password=#{l_password}
+  </select>
+  
+   <!-- 插入一条信息 -->
+  <insert id="addOne" parameterType="com.imooc.bean.Login">
+  	insert login(l_identity,l_password) values(#{l_identity},#{l_password})
+  </insert>
+  
+  
+  <!-- 删除一条信息 -->
+  <delete id="deleteOne" parameterType="com.imooc.bean.Login">
+  	delete from Login where ID = #{id}
+  </delete>
+  
+</mapper>

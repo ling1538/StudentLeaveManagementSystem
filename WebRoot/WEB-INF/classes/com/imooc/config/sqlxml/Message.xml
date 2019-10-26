@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Message">
+  <resultMap type="com.imooc.bean.Message" id="MessageResult">
+    <id column="ID" jdbcType="INTEGER" property="id"/>
+    <result column="m_name" jdbcType="VARCHAR" property="m_name"/>
+    <result column="m_sex" jdbcType="VARCHAR" property="m_sex"/>
+    <result column="m_class" jdbcType="VARCHAR" property="m_class"/>
+    <result column="m_teacherID" jdbcType="INTEGER" property="m_teacherID"/>
+    <result column="m_remarks" jdbcType="VARCHAR" property="m_remarks"/>
+  </resultMap>
+
+<!-- 按照学生姓名或班级进行查找 -->
+  <select id="queryMessageList" parameterType="com.imooc.bean.Message" resultMap="MessageResult">
+    select ID,m_name,m_sex,m_class,m_remarks from MESSAGE
+    <where>
+	    <if test="m_name != null and !&quot;&quot;.equals(m_name.trim())">
+	    	and m_name=#{m_name}
+	    </if>
+	    <if test="m_class != null and !&quot;&quot;.equals(m_class.trim())">
+	    	and m_class like '%' #{m_class} '%'
+	    </if>
+    </where>
+  </select>
+  
+  <!-- 按照学生id号进行查找 -->
+  <select id="querySingleMessage" parameterType="com.imooc.bean.Message" resultMap="MessageResult">
+    select ID,m_name,m_sex,m_class,m_remarks from MESSAGE
+    <where>
+   	<if test="id != null and !&quot;&quot;.equals(id.trim())">
+	    	and ID=#{id}
+	    </if>
+    </where>
+  </select>
+  
+  
+  <!-- 删除一条信息 -->
+  <delete id="deleteOne" parameterType="int">
+  	delete from MESSAGE where ID = #{_parameter}
+  </delete>
+  
+   <!-- 插入一条信息 -->
+  <insert id="addOne" parameterType="com.imooc.bean.Message" >
+  insert message(m_teacherID,m_name,m_sex,m_class,m_remarks) values(#{m_teacherID},#{m_name},#{m_sex},#{m_class},#{m_remarks})
+  </insert>
+  
+</mapper>
